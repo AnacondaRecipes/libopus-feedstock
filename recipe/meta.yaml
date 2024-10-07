@@ -9,7 +9,7 @@ source:
   url: https://archive.mozilla.org/pub/opus/opus-{{ version }}.1.tar.gz
   sha256: 65b58e1e25b2a114157014736a3d9dfeaad8d41be1c8179866f144a2fb44ff9d
 build:
-  number: 1
+  number: 2
   skip: True  # [win]
   run_exports:
     # seems to be maintaining compatibility across minor versions
@@ -31,6 +31,8 @@ requirements:
     - m2w64-gcc-libs            # [win]
 
 test:
+  requires:
+    - conda-build
   commands:
     - test -f ${PREFIX}/lib/libopus.a              # [not win]
     - test -f ${PREFIX}/lib/libopus.so             # [linux]
@@ -39,9 +41,10 @@ test:
     - conda inspect objects -p $PREFIX libopus    # [osx]
 
 about:
-  home: http://opus-codec.org/
-  license: 3-clause BSD
+  home: https://opus-codec.org/
+  license: BSD-3-Clause
   license_family: BSD
+  license_file: COPYING
   summary: Opus Interactive Audio Codec
   description: |
     Opus is a totally open, royalty-free, highly versatile
@@ -51,5 +54,5 @@ about:
     standardized by the Internet Engineering Task Force
     (IETF) as RFC 6716 which incorporated technology from
     Skype's SILK codec and Xiph.Org's CELT codec.
-  doc_url: http://opus-codec.org/docs/
-  dev_url: http://opus-codec.org/development/
+  doc_url: https://opus-codec.org/docs/
+  dev_url: https://opus-codec.org/development/
