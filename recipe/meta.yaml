@@ -39,9 +39,6 @@ test:
     - test -f ${PREFIX}/lib/libopus.dylib          # [osx]
     - conda inspect linkages -p $PREFIX libopus   # [not win]
     - conda inspect objects -p $PREFIX libopus    # [osx]
-  downstreams:
-    - ffmpeg
-    - gst-plugins-base
 
 about:
   home: https://opus-codec.org/
