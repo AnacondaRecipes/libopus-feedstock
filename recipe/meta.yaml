@@ -1,16 +1,16 @@
-{% set version = "1.3.1" %}
-{% set p = "m2-" if win else "" %}
+{% set name = "libopus" %}
+{% set version = "1.6.1" %}
 
 package:
-  name: libopus
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://archive.mozilla.org/pub/opus/opus-{{ version }}.tar.gz
-  sha256: 65b58e1e25b2a114157014736a3d9dfeaad8d41be1c8179866f144a2fb44ff9d
+  url: https://github.com/xiph/opus/archive/v{{ version }}.tar.gz
+  sha256: bf0b97ec7a65890b8db90ef94c4d6c18de12584c3085031953a10986f5917745
+
 build:
-  number: 1
-  skip: True  # [win]
+  number: 0
   run_exports:
     # seems to be maintaining compatibility across minor versions
     # https://abi-laboratory.pro/tracker/timeline/opus/
@@ -18,30 +18,29 @@ build:
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
-    - posix                     # [win]
-    - git
-    - {{ p }}make
-    - {{ p }}autoconf
-    - {{ p }}libtool
-    - {{ p }}automake           # [not win]
-    - {{ p }}automake-wrapper   # [win]
-    - m2w64-toolchain           # [win]
-  run:
-    - m2w64-gcc-libs            # [win]
+    - make        # [unix]
+    - autoconf    # [unix]
+    - libtool     # [unix]
+    - automake    # [unix]
+    - wget        # [unix]
+    - cmake       # [win]
+    - ninja-base  # [win]
 
 test:
   requires:
     - conda-build
   commands:
-    - test -f ${PREFIX}/lib/libopus.a              # [not win]
-    - test -f ${PREFIX}/lib/libopus.so             # [linux]
-    - test -f ${PREFIX}/lib/libopus.dylib          # [osx]
-    - conda inspect linkages -p $PREFIX libopus   # [not win]
-    - conda inspect objects -p $PREFIX libopus    # [osx]
+    - test ! -f ${PREFIX}/lib/libopus.a            # [unix]
+    - test -f ${PREFIX}/lib/libopus${SHLIB_EXT}    # [unix]
+    - if not exist %LIBRARY_BIN%\opus.dll exit 1   # [win]
+    - if not exist %LIBRARY_LIB%\opus.lib exit 1   # [win]
+    - conda inspect linkages -p $PREFIX libopus    # [unix]
+    - conda inspect objects -p $PREFIX libopus     # [osx]
 
 about:
-  home: https://opus-codec.org/
+  home: https://opus-codec.org
   license: BSD-3-Clause
   license_family: BSD
   license_file: COPYING
@@ -54,5 +53,5 @@ about:
     standardized by the Internet Engineering Task Force
     (IETF) as RFC 6716 which incorporated technology from
     Skype's SILK codec and Xiph.Org's CELT codec.
-  doc_url: https://opus-codec.org/docs/
-  dev_url: https://opus-codec.org/development/
+  doc_url: https://opus-codec.org/docs
+  dev_url: https://opus-codec.org/development
