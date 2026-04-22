@@ -1,5 +1,8 @@
 anaconda_config_version: 1
 upstream_sources:
-  - webpage:
-      url: https://ftp.osuosl.org/pub/xiph/releases/opus/
-      regex: opus-([\d.]+)\.tar\.gz
+  - github:
+      identifier: xiph/opus
+      use_max_tag: true
+      exclude_regex: (?i)^(?=.*(?:(?<=\d)rc\d*|(?<=\d)dev\d+|(?:^|[-._])(?:alpha|beta|gamma|pre|preview)(?:\d+)?|[-._]rc\d+|(?:^|[-._])dev\d+|(?:\d+\.)+\d+[ab]\d*)).+$
+      from_pattern: ^v?(\d+(?:\.\d+)*.*)$
+      to_pattern: \1
