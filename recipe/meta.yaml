@@ -29,8 +29,6 @@ requirements:
     - ninja-base  # [win]
 
 test:
-  requires:
-    - conda-build
   commands:
     - test ! -f ${PREFIX}/lib/libopus.a            # [unix]
     - test -f ${PREFIX}/lib/libopus${SHLIB_EXT}    # [unix]
