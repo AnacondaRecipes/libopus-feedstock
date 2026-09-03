@@ -34,8 +34,8 @@ test:
     - test -f ${PREFIX}/lib/libopus${SHLIB_EXT}    # [unix]
     - if not exist %LIBRARY_BIN%\opus.dll exit 1   # [win]
     - if not exist %LIBRARY_LIB%\opus.lib exit 1   # [win]
-    - conda inspect linkages -p $PREFIX libopus    # [unix]
-    - conda inspect objects -p $PREFIX libopus     # [osx]
+    - ldd $PREFIX/lib/libopus${SHLIB_EXT} && ! ldd $PREFIX/lib/libopus${SHLIB_EXT} | grep -qi "not found"   # [linux]
+    - otool -L $PREFIX/lib/libopus${SHLIB_EXT} && ! otool -L $PREFIX/lib/libopus${SHLIB_EXT} | grep -qi "not found"   # [osx]
 
 about:
   home: https://opus-codec.org
