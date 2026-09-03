@@ -10,7 +10,7 @@ source:
   sha256: bf0b97ec7a65890b8db90ef94c4d6c18de12584c3085031953a10986f5917745
 
 build:
-  number: 0
+  number: 1
   run_exports:
     # seems to be maintaining compatibility across minor versions
     # https://abi-laboratory.pro/tracker/timeline/opus/
