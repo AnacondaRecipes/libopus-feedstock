@@ -16,4 +16,7 @@ cmake -G "Ninja" ^
 if errorlevel 1 exit /b 1
 
 ninja install
+echo === CONTENTS OF LIBRARY_PREFIX (recursive) ===
+dir /s /b %LIBRARY_PREFIX%
+echo === END LISTING ===
 if errorlevel 1 exit /b 1
