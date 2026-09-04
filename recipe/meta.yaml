@@ -8,6 +8,8 @@ package:
 source:
   url: https://github.com/xiph/opus/archive/v{{ version }}.tar.gz
   sha256: bf0b97ec7a65890b8db90ef94c4d6c18de12584c3085031953a10986f5917745
+  patches:                                          # [ win and arm64 ]
+    - 0001-fix-arm-dnn-rtcd-unconditional.patch     # [ win and arm64 ]
 
 build:
   number: 1
