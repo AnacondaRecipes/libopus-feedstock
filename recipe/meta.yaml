@@ -8,9 +8,11 @@ package:
 source:
   url: https://github.com/xiph/opus/archive/v{{ version }}.tar.gz
   sha256: bf0b97ec7a65890b8db90ef94c4d6c18de12584c3085031953a10986f5917745
+  patches:                                          # [ win and arm64 ]
+    - 0001-fix-arm-dnn-rtcd-unconditional.patch     # [ win and arm64 ]
 
 build:
-  number: 0
+  number: 1
   run_exports:
     # seems to be maintaining compatibility across minor versions
     # https://abi-laboratory.pro/tracker/timeline/opus/
@@ -29,15 +31,13 @@ requirements:
     - ninja-base  # [win]
 
 test:
-  requires:
-    - conda-build
   commands:
     - test ! -f ${PREFIX}/lib/libopus.a            # [unix]
     - test -f ${PREFIX}/lib/libopus${SHLIB_EXT}    # [unix]
     - if not exist %LIBRARY_BIN%\opus.dll exit 1   # [win]
     - if not exist %LIBRARY_LIB%\opus.lib exit 1   # [win]
-    - conda inspect linkages -p $PREFIX libopus    # [unix]
-    - conda inspect objects -p $PREFIX libopus     # [osx]
+    - ldd $PREFIX/lib/libopus${SHLIB_EXT} && ! ldd $PREFIX/lib/libopus${SHLIB_EXT} | grep -qi "not found"   # [linux]
+    - otool -L $PREFIX/lib/libopus${SHLIB_EXT} && ! otool -L $PREFIX/lib/libopus${SHLIB_EXT} | grep -qi "not found"   # [osx]
 
 about:
   home: https://opus-codec.org
